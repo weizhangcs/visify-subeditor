@@ -51,6 +51,7 @@ if (isMobile) {
 useKeyboard();
 
 onMounted(async () => {
+  console.log('4. [pages/index.vue] Page onMounted hook started.');
   await loadFonts();
 
   const params = new URLSearchParams(window.location.search);
@@ -86,11 +87,7 @@ onMounted(async () => {
     const videoFile = new File([], taskStore.task.option.name);
     await createStore.handleVideo(videoFile);
 
-    await nextTick();
-    if (taskStore.wf) {
-      taskStore.wf.seek(0);
-    }
-
+    console.log('5. [pages/index.vue] URL-driven logic complete. videoBlobUrl is now:', taskStore.task.offline.videoBlobUrl);
   } else {
     // 降级为原始的 DEMO 模式
     taskStore.init();

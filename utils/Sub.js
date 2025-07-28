@@ -3,25 +3,27 @@ import DT from 'duration-time-conversion';
 
 export class Sub {
   constructor({
-    _id = '',
-    start = '',
-    end = '',
-    mark = false,
-    preset = '',
-    text = '',
-    text2 = '',
-    startTime = null,
-    endTime = null,
-  }) {
+                _id = '',
+                start = '',
+                end = '',
+                speaker = '',
+                mark = false,
+                preset = '',
+                text = '',
+                translation = '',
+                startTime = null,
+                endTime = null,
+              }) {
     this._id = _id || generateUUID();
     this.start = start;
     this.end = end;
+    this.speaker = speaker;
     this.mark = mark;
     this.preset = preset;
     const config = useAppConfig();
     const { MAX_SUB_WORD } = config.OPTION;
     this.text = text.slice(0, MAX_SUB_WORD);
-    this.text2 = text2.slice(0, MAX_SUB_WORD);
+    this.translation = translation.slice(0, MAX_SUB_WORD);
     if (typeof startTime === 'number') this.startTime = startTime;
     if (typeof endTime === 'number') this.endTime = endTime;
   }
@@ -36,7 +38,8 @@ export class Sub {
 
   merge(sub) {
     this.text = this.text.trim() + '\n' + sub.text.trim();
-    this.text2 = this.text2.trim() + '\n' + sub.text2.trim();
+    this.translation = this.translation.trim() + '\n' + sub.translation.trim();
+    this.speaker = this.speaker.trim() + '\n' + sub.speaker.trim();
     this.start = DT.d2t(Math.min(this.startTime, sub.startTime));
     this.end = DT.d2t(Math.max(this.endTime, sub.endTime));
     return this;
@@ -50,7 +53,8 @@ export class Sub {
       this.endTime >= 0 &&
       this.startTime < this.endTime &&
       this.text.length <= MAX_SUB_WORD &&
-      this.text2.length <= MAX_SUB_WORD
+      this.translation.length <= MAX_SUB_WORD &&
+      this.speaker.length <= MAX_SUB_WORD
     );
   }
 

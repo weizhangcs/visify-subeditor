@@ -20,10 +20,28 @@
           class="absolute top-0 z-0"
           :style="simulateStyle"
         />
+
         <div
-          v-if="option.subtitleMode === 1 || option.subtitleMode === 2"
-          ref="text"
-          data-text="1"
+          v-if="isAnnotationMode"
+          ref="text1"
+          class="relative z-10 inline-flex flex-col items-center"
+        >
+          <div
+            v-for="(line, index) in speakerArr"
+            :key="index"
+            class="subtitle-line relative whitespace-nowrap"
+            :data-line="line"
+            :style="{
+              '--outline-color': OutlineColour,
+            }"
+          >
+            {{ line }}
+          </div>
+        </div>
+
+        <div
+          v-if="!isAnnotationMode"
+          ref="text1"
           class="relative z-10 inline-flex flex-col items-center"
         >
           <div
@@ -38,19 +56,14 @@
             {{ line }}
           </div>
         </div>
+
         <div
-          v-if="option.subtitleMode === 1 || option.subtitleMode === 3"
+          v-if="isAnnotationMode"
           ref="text2"
-          data-text="2"
-          :class="option.subtitleMode === 1 ? 'scale-[0.6]' : ''"
           class="relative z-10 inline-flex origin-top flex-col items-center"
-          :style="{
-            color: style.secondaryColor,
-            textShadow: style.secondaryTextShadow,
-          }"
         >
           <div
-            v-for="(line, index) in text2Arr"
+            v-for="(line, index) in textArr"
             :key="index"
             class="subtitle-line relative whitespace-nowrap"
             :data-line="line"
@@ -61,6 +74,29 @@
             {{ line }}
           </div>
         </div>
+
+        <div
+          v-if="!isAnnotationMode"
+          ref="text2"
+          class="relative z-10 inline-flex origin-top flex-col items-center"
+          :style="{
+            color: style.secondaryColor,
+            textShadow: style.secondaryTextShadow,
+          }"
+        >
+          <div
+            v-for="(line, index) in translationArr"
+            :key="index"
+            class="subtitle-line relative whitespace-nowrap"
+            :data-line="line"
+            :style="{
+              '--outline-color': SecondaryOutlineColour,
+            }"
+          >
+            {{ line }}
+          </div>
+        </div>
+
       </div>
     </Teleport>
   </div>
@@ -79,6 +115,7 @@ const text2 = ref(null);
 const textBounding = useElementBounding(text);
 const text2Bounding = useElementBounding(text2);
 const option = computed(() => taskStore.task.option);
+const isAnnotationMode = computed(() => option.value.subtitleMode === 1);
 
 const url = computed(() => {
   return taskStore.task.offline.videoBlobUrl;
@@ -88,23 +125,25 @@ const current = computed(() => {
   return taskStore.task.subtitle[taskStore.currentIndex];
 });
 
+const speakerArr = computed(() => {
+  if (!current.value || typeof current.value.speaker !== 'string') return [];
+  return current.value.speaker.trim().split(/\r?\n/).filter(Boolean);
+});
+
 const textArr = computed(() => {
-  if (!current.value) return [];
+  if (!current.value || typeof current.value.text !== 'string') return [];
   return current.value.text.trim().split(/\r?\n/).filter(Boolean);
 });
 
-const text2Arr = computed(() => {
-  if (!current.value) return [];
-  return current.value.text2.trim().split(/\r?\n/).filter(Boolean);
+const translationArr = computed(() => {
+  if (!current.value || typeof current.value.translation !== 'string') return [];
+  return current.value.translation.trim().split(/\r?\n/).filter(Boolean);
 });
 
 const style = computed(() => {
   const css = assToCss(taskStore.task.style);
   const fontSize = parseFloat(css.fontSize);
-  const translateY =
-    option.value.subtitleMode === 1
-      ? fontSize * text2Arr.value.length * 0.4
-      : 0;
+  const translateY = 0; // Resetting translateY logic as it's complex and might not be needed
   css.transform = `translateY(${translateY}px)`;
   return css;
 });
@@ -218,7 +257,11 @@ function init() {
   taskStore.art = art;
 }
 
-onMounted(init);
+//onMounted(init);
+onMounted(() => {
+  console.log('3. [Player.vue] Component is mounting. Current videoBlobUrl is:', taskStore.task.offline.videoBlobUrl);
+  init();
+});
 
 onBeforeUnmount(() => {
   pause();

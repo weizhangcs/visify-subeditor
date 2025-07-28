@@ -1,9 +1,18 @@
 import { DEMO } from '~/config/DEMO';
 import cloneDeep from 'lodash/cloneDeep';
 import clamp from 'lodash/clamp';
+import { defineStore } from 'pinia';
+import { nextTick } from 'vue';
+import { Sub } from '~/utils/Sub';
 
 export const useTaskStore = defineStore('task', {
   state: () => {
+    const initialTask = cloneDeep(DEMO);
+    initialTask.subtitle = [];
+    initialTask.offline.videoBlobUrl = ''; // 核心修复：初始URL设置为空
+
+    console.log('1. [stores/task.js] Store state created. videoBlobUrl is:', initialTask.offline.videoBlobUrl);
+
     return {
       wf: null,
       art: null,
@@ -12,10 +21,7 @@ export const useTaskStore = defineStore('task', {
       currentTime: 0,
       currentItem: null,
       result: null,
-      task: {
-        ...cloneDeep(DEMO),
-        subtitle: [],
-      },
+      task: initialTask,
       artSize: {
         height: 0,
         width: 0,

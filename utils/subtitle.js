@@ -44,9 +44,6 @@ export function toSubTime(str) {
 
 export function sub2ass(task) {
   const { subtitle, style, presets = [] } = cloneDeep(task);
-  const { subtitleMode } = task.option;
-
-  const Fontsize2 = Math.floor(style.Fontsize * 0.6);
 
   return `
 [Script Info]
@@ -63,61 +60,18 @@ ${presets.map((preset) => `Style: ${ASS_KEYS.map((key) => preset[key]).join(', '
 [Events]
 Format: Layer, Start, End, Style, Actor, MarginL, MarginR, MarginV, Effect, Text
 ${subtitle
-  .map((item) => {
-    const text = (item.text || '').trim();
-    const text2 = (item.text2 || '').trim();
+    .map((item) => {
+      // 新增：直接从新数据模型获取数据
+      const speaker = (item.speaker || '').trim();
+      const dialogueText = (item.text || '').trim();
 
-    item.text = text;
-    item.text2 = text2;
-
-    if (style.BorderStyle === 4) {
-      item.text = item.text
-        .split(/\r?\n/g)
-        .map((line) => `\\h${line}\\h`)
-        .join('\n');
-      item.text2 = item.text2
-        .split(/\r?\n/g)
-        .map((line) => `\\h${line}\\h`)
-        .join('\n');
-    }
-
-    let subText = '';
-    let mainText = item.text;
-    let secondText = `{\\c&${style.SecondaryColour}&}${item.text2}`;
-
-    if (style.SecondaryOutlineColour) {
-      secondText = `{\\3c&${style.SecondaryOutlineColour}&}${secondText}`;
-    }
-
-    if (style.SecondaryBackColour) {
-      secondText = `{\\4c&${style.SecondaryBackColour}&}${secondText}`;
-    }
-
-    if (subtitleMode === 2 && text) {
-      subText = mainText;
-    }
-
-    if (subtitleMode === 3 && text2) {
-      subText = secondText;
-    }
-
-    if (subtitleMode === 1) {
-      if (text) {
-        subText = mainText;
-      }
-
-      if (text2) {
-        subText += `\\N{\\fs${Fontsize2}}${secondText}`;
-      }
-    }
-
-    const start = toSubTime(item.start);
-    const end = toSubTime(item.end);
-    const assText = subText.replace(/\r?\n/g, '\\N');
-    const preset = item.preset || 'Default';
-    return `Dialogue: 0,${start},${end},${preset},NTP,0000,0000,0000,,${assText}`;
-  })
-  .join('\n')}
+      const start = toSubTime(item.start);
+      const end = toSubTime(item.end);
+      const assText = dialogueText.replace(/\r?\n/g, '\\N');
+      const preset = item.preset || 'Default';
+      return `Dialogue: 0,${start},${end},${preset},${speaker},0000,0000,0000,,${assText}`;
+    })
+    .join('\n')}
     `.trim();
 }
 

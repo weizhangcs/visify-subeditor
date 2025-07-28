@@ -17,10 +17,6 @@ export function useTranslate() {
         text,
         target_lang,
       },
-      query: {
-        deepLApiKey: appStore.option.deepLApiKey || undefined,
-        deepLApiUrl: appStore.option.deepLApiUrl || undefined,
-      },
     });
 
     if (error.value) {
@@ -40,7 +36,8 @@ export function useTranslate() {
       const item = subtitle.value[i];
       if (!item.text.trim()) continue;
       try {
-        item.text2 = await translate(item.text, option.value.translateTo);
+        // 将翻译结果写入 item.translation
+        item.translation = await translate(item.text, option.value.translateTo);
       } catch (error) {
         shouldStop.value = true;
         loading.value = false;

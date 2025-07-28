@@ -1,45 +1,34 @@
+// 导入 Google Cloud Translate v2 客户端库
+import { Translate } from '@google-cloud/translate/build/src/v2/index.js';
+
+// 创建一个翻译客户端实例
+// 由于您已配置ADC，此处无需任何参数，库会自动寻找凭证。
+const translate = new Translate();
+
 export default defineEventHandler(async (event) => {
   try {
-    const query = getQuery(event);
-    const config = useRuntimeConfig();
-    const deepLApiKey = query.deepLApiKey || config.deepLApiKey;
-    const deepLApiUrl = query.deepLApiUrl || config.deepLApiUrl;
+    const { text, target_lang } = await readBody(event);
 
-    if (!deepLApiKey) {
+    if (!text || !target_lang) {
       throw createError({
-        statusCode: 500,
-        message: 'DeepL API KEY is missing in .env or API options',
+        statusCode: 400,
+        message: 'Missing required fields: text, target_lang',
       });
     }
 
-    if (!deepLApiUrl) {
-      throw createError({
-        statusCode: 500,
-        message: 'DeepL API URL is missing in .env or API options',
-      });
-    }
+    // 调用翻译API
+    const [translations] = await translate.translate(text, target_lang);
 
-    const body = await readBody(event);
-    const { text, target_lang } = body;
+    // Google API返回的是一个数组，我们取第一个结果
+    const result = Array.isArray(translations) ? translations[0] : translations;
 
-    const data = await $fetch(deepLApiUrl, {
-      method: 'POST',
-      headers: {
-        Authorization: `DeepL-Auth-Key ${deepLApiKey}`,
-        'Content-Type': 'application/json',
-      },
-      body: {
-        text: [text],
-        target_lang: target_lang,
-      },
-    });
+    return result;
 
-    return data.translations[0].text;
   } catch (error) {
-    console.error(error);
+    console.error('Google Translate API Error:', error);
     throw createError({
-      statusCode: error.statusCode || 500,
-      message: error.message || 'Internal Server Error',
+      statusCode: error.code || 500,
+      message: error.message || 'An error occurred during translation.',
     });
   }
 });

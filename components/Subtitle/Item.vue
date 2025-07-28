@@ -94,43 +94,36 @@
           </div>
         </div>
       </div>
-      <div
-        ref="text"
-        class="relative flex h-full flex-1 flex-col"
-        :class="`subtitle-mode-${option.subtitleMode}`"
-      >
+      <div ref="text" class="relative flex h-full flex-1 flex-col">
         <el-input
-          v-show="option.subtitleMode === 1 || option.subtitleMode === 2"
           ref="text1"
-          v-model="item.text"
+          :model-value="firstInputText"
           :rows="2"
           type="textarea"
           class="text1 flex-1"
           resize="none"
           :maxlength="MAX_SUB_WORD"
-          data-subtitle="text"
+          :placeholder="firstInputPlaceholder"
           :data-index="index"
-          :placeholder="$t(`task.textPlaceholder`)"
           @focus="isText1Focus = true"
           @blur="isText1Focus = false"
+          @update:model-value="onFirstInput"
         />
         <el-input
-          v-show="option.subtitleMode === 1 || option.subtitleMode === 3"
           ref="text2"
-          v-model="item.text2"
+          :model-value="secondInputText"
           :rows="2"
           type="textarea"
           class="text2 flex-1"
           resize="none"
           :maxlength="MAX_SUB_WORD"
-          data-subtitle="text2"
+          :placeholder="secondInputPlaceholder"
           :data-index="index"
-          :placeholder="$t(`task.text2Placeholder`)"
           @focus="isText2Focus = true"
           @blur="isText2Focus = false"
+          @update:model-value="onSecondInput"
         />
         <div
-          v-show="option.subtitleMode === 1"
           class="absolute top-1/2 z-10 h-[1px] w-full"
           :class="current ? 'bg-[#562ab2]' : 'bg-[#1d1e23]'"
         />
@@ -179,6 +172,46 @@ const current = computed(() => taskStore.currentIndex === props.index);
 const sub = computed(() => taskStore.task.subtitle[props.index]);
 const message = computed(() => isErrorSub(sub.value));
 
+// 新增: 动态计算属性，用于决定v-model绑定和placeholder内容
+const isAnnotationMode = computed(() => option.value.subtitleMode === 1);
+
+const firstInputText = computed(() => {
+  return isAnnotationMode.value ? props.item.speaker : props.item.text;
+});
+
+const secondInputText = computed(() => {
+  return isAnnotationMode.value ? props.item.text : props.item.translation;
+});
+
+const firstInputPlaceholder = computed(() => {
+  return isAnnotationMode.value
+    ? t('task.speakerPlaceholder')
+    : t('task.textPlaceholder');
+});
+
+const secondInputPlaceholder = computed(() => {
+  return isAnnotationMode.value
+    ? t('task.textPlaceholder')
+    : t('task.translationPlaceholder');
+});
+
+// 新增: 动态更新函数，用于手动实现v-model的更新逻辑
+function onFirstInput(value) {
+  if (isAnnotationMode.value) {
+    props.item.speaker = value;
+  } else {
+    props.item.text = value;
+  }
+}
+
+function onSecondInput(value) {
+  if (isAnnotationMode.value) {
+    props.item.text = value;
+  } else {
+    props.item.translation = value;
+  }
+}
+
 function onItemClick() {
   taskStore.art.seek = sub.value.startTime + 0.01;
 }
@@ -188,12 +221,12 @@ function onRemoveClick() {
 }
 
 function onMergeClick() {
-  const current = taskStore.task.subtitle[props.index];
-  const next = taskStore.task.subtitle[props.index + 1];
-  if (next) {
-    current.end = next.end;
-    current.text += next.text;
-    current.text2 += next.text2;
+  const currentSub = props.item;
+  const nextSub = taskStore.task.subtitle[props.index + 1];
+  if (nextSub) {
+    // 使用 Sub 类中定义的 merge 方法，确保逻辑一致性
+    currentSub.merge(nextSub);
+    // 从数组中移除已被合并的下一条字幕
     taskStore.task.subtitle.splice(props.index + 1, 1);
   }
 }
