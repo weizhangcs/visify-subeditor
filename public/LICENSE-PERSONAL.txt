@@ -1,0 +1,83 @@
+[AIMU] Personal License Agreement
+Version 2.0.0, 2024
+
+Copyright (c) 2024 aimu.app
+All rights reserved.
+
+1. GRANT OF LICENSE
+This Personal License Agreement ("License") is granted to a single user only 
+for use on one specified domain. Each user must obtain their own license to 
+use the Software.
+
+2. DEFINITIONS
+2.1. "Software" means the AIMU software and associated documentation
+2.2. "Personal Use" means non-commercial use by an individual
+2.3. "Domain" means the single web domain specified at time of purchase
+
+3. PERMITTED USE
+3.1. You may:
+- Use the Software for personal, non-commercial purposes
+- Install the Software on your personal devices
+- Deploy the Software on one specified domain (including its subdomains)
+- Use localhost or development domains for testing purposes
+- Receive updates and bug fixes as released
+
+3.2. Personal use includes:
+- Individual usage
+- Educational purposes
+- Non-profit activities
+- Personal projects without monetary gain
+- Personal blogs or websites without advertising revenue
+
+4. RESTRICTIONS
+4.1. Domain Restrictions:
+- Each license is valid for one domain only
+- Domain must be specified at time of purchase
+- Changing domains requires prior authorization
+
+4.2. General Restrictions:
+You may not:
+- Use the Software for any commercial purpose
+- Deploy the Software on multiple domains
+- Modify, adapt, or create derivative works
+- Distribute, sell, rent, lease, or sublicense the Software
+- Remove or modify any copyright notices
+- Use the Software in any way that violates applicable laws
+- Transfer your license to another person
+
+5. OWNERSHIP
+The Software is owned and copyrighted by aimu.app. 
+Your license confers no title or ownership in the Software.
+
+6. TERM
+6.1. This License is effective until terminated
+6.2. License will terminate automatically if you fail to comply with any terms
+6.3. Upon termination, you must cease all use of the Software
+
+7. NO WARRANTY
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, 
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO WARRANTIES OF 
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+
+8. SUPPORT AND UPDATES
+8.1. Basic technical support is provided
+8.2. Support provided via admin@aimu.app
+8.3. Free updates within the same major version
+
+9. PRICING AND PAYMENT
+9.1. License fee: $20 USD
+9.2. Payment must be made in full before use
+
+10. REFUND POLICY
+10.1. 7-day money-back guarantee if unsatisfied
+10.2. No refund for violation of license terms
+
+11. DOMAIN CHANGES
+11.1. Domain changes must be requested via admin@aimu.app
+11.2. Limited to one domain change per license
+11.3. Domain changes are subject to approval
+
+By using the Software, you acknowledge that you have read this Agreement, 
+understand it, and agree to be bound by its terms and conditions.
+
+Contact: admin@aimu.app

@@ -1,0 +1,97 @@
+[AIMU] Commercial License Agreement
+Version 2.0.0, 2024
+
+Copyright (c) 2024 aimu.app
+All rights reserved.
+
+1. GRANT OF LICENSE
+This Commercial License Agreement ("License") grants you the right to use 
+the Software for commercial purposes on one specified domain, subject to the terms below.
+
+2. DEFINITIONS
+2.1. "Software" means the AIMU software and associated documentation
+2.2. "Commercial Use" means any use intended for or directed towards 
+     commercial advantage or monetary compensation
+2.3. "Organization" means the legal entity purchasing this license
+2.4. "Domain" means the single web domain specified at the time of purchase
+
+3. PERMITTED USE
+3.1. You may:
+- Use the Software for commercial purposes
+- Install and use the Software on multiple devices within your organization
+- Modify the Software for your organization's internal use
+- Deploy the Software on one specified domain (including its subdomains)
+- Use localhost or development domains for testing purposes
+
+3.2. Commercial use includes:
+- Business operations
+- Client projects
+- Commercial websites
+- Revenue-generating applications
+- Professional services
+
+4. RESTRICTIONS
+4.1. Domain Restrictions:
+- Each license is valid for one domain only
+- Domain must be specified at time of purchase
+- Changing domains requires prior authorization
+- Additional domains require additional licenses
+
+4.2. General Restrictions:
+- No reselling or redistributing the Software as a standalone product
+- No transfer of this license to another organization
+- No removal or modification of copyright notices
+- No use of the Software in violation of applicable laws
+- No creation of competing products based on the Software
+
+5. LICENSE TIERS
+5.1. Single Domain Commercial License
+     - Valid for one domain
+     - Development and testing environments included
+     - Basic support
+
+5.2. Multi-Domain License (separate purchase required)
+     - Multiple domains
+     - Priority support
+     - Custom modifications
+
+6. OWNERSHIP AND COPYRIGHT
+6.1. The Software remains the property of aimu.app
+6.2. This license gives you limited rights to use the Software
+
+7. TERM AND TERMINATION
+7.1. This License is perpetual unless terminated
+7.2. License will terminate if you fail to comply with any terms
+7.3. Upon termination, you must cease all use of the Software
+
+8. WARRANTY
+8.1. Limited 90-day warranty for Software functionality
+8.2. No warranty for fitness for a particular purpose
+
+9. SUPPORT AND UPDATES
+9.1. Standard technical support included
+9.2. Free updates within the same major version
+9.3. Support provided via admin@aimu.app
+
+10. LIABILITY LIMITATION
+IN NO EVENT SHALL AIMU.APP BE LIABLE FOR ANY SPECIAL, 
+INCIDENTAL, INDIRECT, OR CONSEQUENTIAL DAMAGES WHATSOEVER.
+
+11. PRICING AND PAYMENT
+11.1. License fee: $100 USD
+11.2. Payment must be made in full before use
+11.3. Additional domain licenses may be purchased separately
+
+12. REFUND POLICY
+12.1. 7-day money-back guarantee if unsatisfied
+12.2. No refund for violation of license terms
+
+13. DOMAIN CHANGES
+13.1. Domain changes must be requested via admin@aimu.app
+13.2. Limited to one domain change per license
+13.3. Domain changes are subject to approval
+
+By using the Software, you acknowledge that you have read this Agreement, 
+understand it, and agree to be bound by its terms and conditions.
+
+Contact: admin@aimu.app

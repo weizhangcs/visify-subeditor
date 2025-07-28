@@ -1,0 +1,60 @@
+.dark {
+  --el-bg-color-overlay: #1d1e23 !important;
+  --el-border-color-light: #2c2e34 !important;
+  --el-border-color-lighter: #2c2e34 !important;
+  --el-disabled-bg-color: #141414 !important;
+
+  .el-checkbox__label {
+    --el-checkbox-checked-text-color: #ffffff;
+  }
+
+  .el-radio-button {
+    --el-radio-button-checked-bg-color: #502cab;
+    --el-radio-button-checked-border-color: #502cab;
+  }
+
+  .el-radio-button__inner:hover {
+    color: #8e62ff;
+  }
+
+  .el-slider {
+    --el-slider-main-bg-color: #752522;
+  }
+
+  .el-switch {
+    --el-switch-on-color: #13ce66;
+  }
+
+  .el-select-dropdown__item {
+    padding: 0 15px !important;
+  }
+
+  .el-descriptions {
+    --el-descriptions-item-bordered-label-background: #00192e;
+  }
+
+  .el-popover.el-popper {
+    text-align: left;
+    word-break: normal;
+  }
+
+  .el-dialog {
+    --el-dialog-bg-color: #1d1e23;
+    --el-dialog-border-radius: 4px;
+    --el-dialog-padding-primary: 0;
+    border: 1px solid #2c2e34;
+
+    .el-dialog__header {
+      padding-bottom: 0;
+      margin-right: 0;
+    }
+
+    .el-dialog__footer {
+      padding-top: 0;
+    }
+  }
+
+  .is-message-box {
+    z-index: 9999 !important;
+  }
+}
