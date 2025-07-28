@@ -128,18 +128,18 @@ export default defineNuxtConfig({
   },
   nitro: {
     routeRules: {
-      '/': {
-        headers: {
-          'Cross-Origin-Opener-Policy': 'same-origin',
-          'Cross-Origin-Embedder-Policy': 'require-corp',
-        },
-      },
-      '/ffmpeg': {
-        headers: {
-          'Cross-Origin-Opener-Policy': 'same-origin',
-          'Cross-Origin-Embedder-Policy': 'require-corp',
-        },
-      },
+      // '/': {
+      //   headers: {
+      //     'Cross-Origin-Opener-Policy': 'same-origin',
+      //     'Cross-Origin-Embedder-Policy': 'require-corp',
+      //   },
+      // },
+      // '/ffmpeg': {
+      //   headers: {
+      //     'Cross-Origin-Opener-Policy': 'same-origin',
+      //     'Cross-Origin-Embedder-Policy': 'require-corp',
+      //   },
+      // },
     },
   },
 });

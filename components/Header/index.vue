@@ -6,7 +6,6 @@
       <HeaderLogo />
       <div class="h-4 w-[1px] bg-white/20" />
       <div class="flex items-center gap-4">
-        <HeaderCreate />
         <HeaderExport />
       </div>
       <div class="h-4 w-[1px] bg-white/20" />
@@ -17,11 +16,6 @@
       </div>
     </div>
     <div class="flex items-center justify-end gap-4">
-      <client-only>
-        <HeaderCart />
-      </client-only>
-      <HeaderHelp />
-      <HeaderChat />
       <div class="h-4 w-[1px] bg-white/20" />
       <HeaderI18n />
     </div>

@@ -28,9 +28,7 @@
       <Subtitle class="flex-1" />
     </div>
     <Footer class="h-40" />
-    <LazyDialogsCreate v-if="appStore.popup.create" />
     <LazyDialogsExport v-if="appStore.popup.export" />
-    <LazyDialogsHelp v-if="appStore.popup.help" />
     <LazyDialogsKeyboard v-if="appStore.popup.keyboard" />
     <LazyDialogsFFmpeg v-if="appStore.ffmpeg.enable" />
   </div>
@@ -40,6 +38,7 @@
 <script setup>
 const appStore = useAppStore();
 const taskStore = useTaskStore();
+const createStore = useCreateStore();
 const { isMobile } = useDevice();
 const { loadFonts } = useLoadFonts();
 const splitX = computed(() => appStore.option.splitX);
@@ -51,9 +50,51 @@ if (isMobile) {
 
 useKeyboard();
 
-onMounted(() => {
-  loadFonts();
-  taskStore.init();
+onMounted(async () => {
+  await loadFonts();
+
+  const params = new URLSearchParams(window.location.search);
+  const videoUrl = params.get('videoUrl');
+  const srtUrl = params.get('srtUrl');
+  // const assetId = params.get('assetId'); // - 暂存 assetId，备用
+
+  if (videoUrl) {
+    // URL驱动模式
+    taskStore.task.offline.thumbnail = null;
+    taskStore.task.offline.videoBlobUrl = videoUrl;
+    taskStore.task.option.name = videoUrl.split('/').pop();
+    taskStore.task.demo = false; // - 修复导出BUG：将任务标记为非DEMO模式
+
+    if (srtUrl) {
+      try {
+        const response = await fetch(srtUrl);
+        if (!response.ok) throw new Error('Network response was not ok.');
+        const srtText = await response.text();
+        const srtFile = new File([srtText], 'subtitle.srt', { type: 'text/plain' });
+        const subtitles = await file2sub(srtFile);
+        taskStore.task.subtitle = subtitles;
+      } catch (error) {
+        console.error('Failed to load or parse SRT file:', error);
+        errorNotify('Failed to load subtitle file.');
+        taskStore.task.subtitle = [];
+      }
+    } else {
+      taskStore.task.subtitle = [];
+    }
+
+    // 触发视频信息分析
+    const videoFile = new File([], taskStore.task.option.name);
+    await createStore.handleVideo(videoFile);
+
+    await nextTick();
+    if (taskStore.wf) {
+      taskStore.wf.seek(0);
+    }
+
+  } else {
+    // 降级为原始的 DEMO 模式
+    taskStore.init();
+  }
 });
 
 watch(
