@@ -1,4 +1,5 @@
 import cloneDeep from 'lodash/cloneDeep';
+import { defineStore } from 'pinia';
 
 export const useCreateStore = defineStore('create', {
   state: () => {
@@ -39,13 +40,18 @@ export const useCreateStore = defineStore('create', {
     },
     async handleVideo(file) {
       const { t } = useNuxtApp().$i18n;
+      const taskStore = useTaskStore(); // <-- 获取 taskStore 实例
 
       this.analyzing = true;
       const offlineInfo = await this.getInfo(file);
       this.analyzing = false;
 
       if (!offlineInfo.canPlay) {
-        errorNotify(t('create.videoNotPlay'));
+        // 核心修复：增加一个判断条件
+        // 只有当 taskStore 中没有一个真实的 http URL 时，才认为这是一个“真”错误
+        if (!taskStore.task.offline.videoBlobUrl.startsWith('http')) {
+          errorNotify(t('create.videoNotPlay'));
+        }
         return false;
       }
 
