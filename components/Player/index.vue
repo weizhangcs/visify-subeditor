@@ -96,7 +96,6 @@
             {{ line }}
           </div>
         </div>
-
       </div>
     </Teleport>
   </div>
@@ -136,7 +135,8 @@ const textArr = computed(() => {
 });
 
 const translationArr = computed(() => {
-  if (!current.value || typeof current.value.translation !== 'string') return [];
+  if (!current.value || typeof current.value.translation !== 'string')
+    return [];
   return current.value.translation.trim().split(/\r?\n/).filter(Boolean);
 });
 

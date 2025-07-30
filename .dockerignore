@@ -1,0 +1,28 @@
+# 文件: .dockerignore
+
+# Git a
+.git
+.gitignore
+
+# IDE config
+.idea/
+.vscode/
+
+# Dependencies
+node_modules/
+
+# Nuxt build outputs and caches
+.nuxt/
+.output/
+dist/
+
+# Logs
+*.log
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Docker
+Dockerfile
+.dockerignore

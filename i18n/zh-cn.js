@@ -4,10 +4,8 @@ const { OPTION } = config;
 export default {
   name: 'SS',
   title: 'SS - Visify Story Studio 字幕编辑器',
-  description:
-    'SS 是一个在线免费字幕编辑器,同时支持人名标注',
-  keywords:
-    '人名标注, 双语字幕, 字幕样式, 字幕翻译, 双语字幕',
+  description: 'SS 是一个在线免费字幕编辑器,同时支持人名标注',
+  keywords: '人名标注, 双语字幕, 字幕样式, 字幕翻译, 双语字幕',
   error: {
     mobile: '不支持的设备',
     mobileTip: '请使用电脑访问',
