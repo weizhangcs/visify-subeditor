@@ -259,7 +259,7 @@ function init() {
 
 //onMounted(init);
 onMounted(() => {
-  console.log('3. [Player.vue] Component is mounting. Current videoBlobUrl is:', taskStore.task.offline.videoBlobUrl);
+  //console.log('3. [Player.vue] Component is mounting. Current videoBlobUrl is:', taskStore.task.offline.videoBlobUrl);
   init();
 });
 

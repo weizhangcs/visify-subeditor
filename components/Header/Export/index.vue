@@ -1,8 +1,13 @@
 <template>
   <div class="flex items-center">
-    <el-button :loading="isSaving" type="primary" dark @click="saveToDjango">
+    <el-button
+      :loading="isSaving"
+      type="primary"
+      dark
+      @click="exportToWorkbench"
+    >
       <Icon name="fa-save" class="mr-2 text-xs" />
-      {{ $t('header.saveToDjango') }}
+      {{ $t('header.exportToWorkbench') }}
     </el-button>
   </div>
 </template>
@@ -17,6 +22,7 @@ import { ElNotification } from 'element-plus';
 const taskStore = useTaskStore();
 const { t } = useI18n();
 const isSaving = ref(false);
+const config = useRuntimeConfig(); // 获取运行时配置
 
 // 从 Cookie 中获取 CSRF Token 的辅助函数
 function getCookie(name) {
@@ -34,7 +40,7 @@ function getCookie(name) {
   return cookieValue;
 }
 
-async function saveToDjango() {
+async function exportToWorkbench() {
   isSaving.value = true;
   try {
     // 1. 获取 assetId
@@ -47,21 +53,20 @@ async function saveToDjango() {
     // 2. 生成 .ass 内容
     const assContent = sub2ass(taskStore.task);
 
-    // 3. 构建并发送 API 请求
-    const djangoApiUrl = `http://localhost:8000/integrations/ls/asset/${assetId}/save-l1-output/`;
+    // 3. 动态构建URL
+    const djangoApiUrl = `${config.public.vssWorkbenchUrl}/integrations/ls/asset/${assetId}/save-l1-output/`;
     const csrftoken = getCookie('csrftoken'); // 获取 CSRF Token
 
     const response = await fetch(djangoApiUrl, {
       method: 'POST',
       headers: {
-        'Content-Type': 'text/plain;charset=UTF-8', // <-- 修正拼写错误
-        'X-CSRFToken': csrftoken, // <-- 增加 CSRF Token
+        'Content-Type': 'text/plain;charset=UTF-8',
+        'X-CSRFToken': csrftoken,
       },
       body: assContent,
     });
 
     if (!response.ok) {
-      // 尝试解析JSON错误信息，如果失败则使用通用的状态文本
       let errorMessage = `HTTP error! status: ${response.statusText}`;
       try {
         const errorData = await response.json();

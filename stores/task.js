@@ -11,7 +11,7 @@ export const useTaskStore = defineStore('task', {
     initialTask.subtitle = [];
     initialTask.offline.videoBlobUrl = ''; // 核心修复：初始URL设置为空
 
-    console.log('1. [stores/task.js] Store state created. videoBlobUrl is:', initialTask.offline.videoBlobUrl);
+    //console.log('1. [stores/task.js] Store state created. videoBlobUrl is:', initialTask.offline.videoBlobUrl);
 
     return {
       wf: null,

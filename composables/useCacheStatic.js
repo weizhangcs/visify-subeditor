@@ -1,10 +1,13 @@
 import localForage from 'localforage';
 
 export async function useCacheStatic() {
-  console.log('2. [useCacheStatic.js] Script execution started.');
+  //console.log('2. [useCacheStatic.js] Script execution started.');
   // 新增：如果URL中已有videoUrl参数，则立即退出，不执行任何操作
-  if (import.meta.client && new URLSearchParams(window.location.search).has('videoUrl')) {
-    console.log('2a. [useCacheStatic.js] In URL-driven mode, exiting.');
+  if (
+    import.meta.client &&
+    new URLSearchParams(window.location.search).has('videoUrl')
+  ) {
+    //console.log('2a. [useCacheStatic.js] In URL-driven mode, exiting.');
     return;
   }
 
@@ -22,14 +25,14 @@ export async function useCacheStatic() {
 
   if (blob) {
     const url = URL.createObjectURL(blob);
-    console.log('2b. [useCacheStatic.js] Overwriting state with blob from CACHE:', url);
+    //console.log('2b. [useCacheStatic.js] Overwriting state with blob from CACHE:', url);
     taskStore.task.offline.videoBlobUrl = url;
   } else {
     const video = await fetch(path);
     const videoBlob = await video.blob();
     await staticStorage.setItem(path, videoBlob);
     const url = URL.createObjectURL(videoBlob);
-    console.log('2c. [useCacheStatic.js] Overwriting state with NEWLY FETCHED blob:', url);
+    //console.log('2c. [useCacheStatic.js] Overwriting state with NEWLY FETCHED blob:', url);
     taskStore.task.offline.videoBlobUrl = url;
   }
 }

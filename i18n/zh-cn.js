@@ -2,12 +2,12 @@ import { config } from '~/config';
 const { OPTION } = config;
 
 export default {
-  name: '爱幕',
-  title: '爱幕 - 在线免费字幕编辑器',
+  name: 'SS',
+  title: 'SS - Visify Story Studio 字幕编辑器',
   description:
-    '爱幕 是一个在线免费字幕编辑器, 支持语音识别, 字幕样式, 字幕翻译, 双语字幕, 字幕转格式, 搬运YouTbe视频, 在线转码视频, 在线压制字幕...',
+    'SS 是一个在线免费字幕编辑器,同时支持人名标注',
   keywords:
-    '爱幕, 在线免费，语音识别, 双语字幕, 字幕样式, 字幕翻译, 双语字幕, 字幕转格式, 在线转码视频, 在线压制字幕, 搬运YouTbe视频',
+    '人名标注, 双语字幕, 字幕样式, 字幕翻译, 双语字幕',
   error: {
     mobile: '不支持的设备',
     mobileTip: '请使用电脑访问',
@@ -107,14 +107,11 @@ export default {
     'ZCOOL KuaiLe': '站酷快乐体',
   },
   header: {
-    create: '创建',
-    export: '导出',
-    help: '购买说明',
     keyboard: '快捷键',
-    saveToDjango: '完成并保存',
+    exportToWorkbench: '完成并导出',
+    saveSuccess: '导出成功',
     undo: '撤销',
     redo: '重做',
-    chat: '在线沟通',
     translateTip: '把 [主字幕] 翻译到 [副字幕]',
   },
   create: {

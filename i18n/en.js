@@ -2,10 +2,10 @@ import { config } from '~/config';
 const { OPTION } = config;
 
 export default {
-  name: 'Aimu',
-  title: 'Aimu - Online Subtitle Editor',
+  name: 'SS',
+  title: 'Visify Story Studio - Sub Editor',
   description:
-    'Aimu is a free online subtitle editor that allows you to create, edit, and translate subtitles.',
+    'Visify Story Studio - Sub Editor is a online subtitle editor that allows you to edit, translate subtitles and adds annotation.',
   keywords: 'subtitle, editor, translate, create, edit, online, free',
   error: {
     mobile: 'Unsupported device',
@@ -106,14 +106,11 @@ export default {
     'ZCOOL KuaiLe': 'ZCOOL KuaiLe',
   },
   header: {
-    create: 'Create',
-    export: 'Export',
-    help: 'Buy Guide',
     keyboard: 'Keyboard',
-    saveToDjango: 'Complete the task',
+    exportToWorkbench: 'Complete and export',
+    saveSuccess: 'Exported Successfully',
     undo: 'Undo',
     redo: 'Redo',
-    chat: 'Live Chat',
     translateTip: 'Translate [Main] to [Second]',
   },
   create: {

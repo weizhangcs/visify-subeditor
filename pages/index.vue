@@ -49,7 +49,7 @@ if (isMobile) {
 useKeyboard();
 
 onMounted(async () => {
-  console.log('4. [pages/index.vue] Page onMounted hook started.');
+  //console.log('4. [pages/index.vue] Page onMounted hook started.');
   await loadFonts();
 
   const params = new URLSearchParams(window.location.search);
@@ -69,7 +69,9 @@ onMounted(async () => {
         const response = await fetch(srtUrl);
         if (!response.ok) throw new Error('Network response was not ok.');
         const srtText = await response.text();
-        const srtFile = new File([srtText], 'subtitle.srt', { type: 'text/plain' });
+        const srtFile = new File([srtText], 'subtitle.srt', {
+          type: 'text/plain',
+        });
         const subtitles = await file2sub(srtFile);
         taskStore.task.subtitle = subtitles;
       } catch (error) {
@@ -85,7 +87,10 @@ onMounted(async () => {
     const videoFile = new File([], taskStore.task.option.name);
     await createStore.handleVideo(videoFile);
 
-    console.log('5. [pages/index.vue] URL-driven logic complete. videoBlobUrl is now:', taskStore.task.offline.videoBlobUrl);
+    //console.log(
+    //'5. [pages/index.vue] URL-driven logic complete. videoBlobUrl is now:',
+    //taskStore.task.offline.videoBlobUrl,
+    //);
   } else {
     // 降级为原始的 DEMO 模式
     taskStore.init();

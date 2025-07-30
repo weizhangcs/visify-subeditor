@@ -1,10 +1,9 @@
 export default defineNuxtConfig({
   compatibilityDate: '2024-11-03',
   runtimeConfig: {
-    deepLApiKey: process.env.DEEPL_API_KEY,
-    deepLApiUrl: process.env.DEEPL_API_URL,
-    openaiApiKey: process.env.OPENAI_API_KEY,
-    openaiApiUrl: process.env.OPENAI_API_URL,
+    public: {
+      vssWorkbenchUrl: process.env.NUXT_PUBLIC_VSS_WORKBENCH_URL || 'http://localhost:8000',
+    }
   },
   app: {
     head: {
