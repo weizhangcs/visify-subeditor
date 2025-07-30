@@ -44,18 +44,6 @@
           <Icon name="fa-gear" />
           {{ $t('tool.option') }}
         </div>
-        <div
-          class="relative flex h-full cursor-pointer items-center gap-1.5 border-r border-[#1d1e23] px-4 transition-all duration-300"
-          :class="{
-            'bg-[#502cab] text-white': tab === 'api',
-            'text-white/70': tab !== 'api',
-            active: tab === 'api' && toolbar,
-          }"
-          @click="onTabClick('api')"
-        >
-          <Icon name="fa-key" />
-          API
-        </div>
       </div>
       <div
         class="group flex h-8 w-8 cursor-pointer items-center justify-center text-base transition duration-300 hover:bg-[#502cab]"
@@ -77,7 +65,6 @@
           <ToolStyle v-if="tab === 'style'" />
           <ToolUtils v-if="tab === 'utils'" />
           <ToolOption v-if="tab === 'option'" />
-          <ToolApi v-if="tab === 'api'" />
         </el-scrollbar>
       </client-only>
     </div>

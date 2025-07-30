@@ -28,9 +28,7 @@
       <Subtitle class="flex-1" />
     </div>
     <Footer class="h-40" />
-    <LazyDialogsExport v-if="appStore.popup.export" />
     <LazyDialogsKeyboard v-if="appStore.popup.keyboard" />
-    <LazyDialogsFFmpeg v-if="appStore.ffmpeg.enable" />
   </div>
   <VitePwaManifest />
 </template>

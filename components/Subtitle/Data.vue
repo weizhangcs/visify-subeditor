@@ -38,25 +38,6 @@
           placement="top"
           :width="200"
           trigger="hover"
-          :content="$t(`task.decodeTip`)"
-        >
-          <template #reference>
-            <el-button
-              :icon="Promotion"
-              :loading="decoding"
-              color="#626aef"
-              dark
-              plain
-              @click="onDecodeClick"
-            >
-              {{ $t(`task.decode`) }}
-            </el-button>
-          </template>
-        </el-popover>
-        <el-popover
-          placement="top"
-          :width="200"
-          trigger="hover"
           :content="$t(`task.keyTip`)"
         >
           <template #reference>
@@ -79,7 +60,7 @@
 
 <script setup>
 import { RecycleScroller } from 'vue-virtual-scroller';
-import { Plus, Promotion, Headset } from '@element-plus/icons-vue';
+import { Plus, Headset } from '@element-plus/icons-vue';
 
 const { t } = useI18n();
 const taskStore = useTaskStore();
@@ -87,7 +68,6 @@ const scroller = ref(null);
 const data = ref(null);
 const height = ref(104);
 const isScroll = ref(false);
-const decoding = ref(false);
 const isHover = ref(false);
 
 const subtitle = computed(() => {
@@ -111,18 +91,6 @@ function onCreateClick() {
       text: t('task.tmp'),
     }),
   );
-}
-
-async function onDecodeClick() {
-  decoding.value = true;
-  const { channelData } = taskStore.wf.decoder;
-  const resule = await usePcmToSub(channelData);
-  if (resule.length) {
-    taskStore.task.subtitle = resule;
-  } else {
-    warningNotify(t('task.audioDecodeError'));
-  }
-  decoding.value = false;
 }
 
 async function onKeyClick() {

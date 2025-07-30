@@ -21,10 +21,6 @@ export const useAppStore = defineStore('app', {
         autoAlign: true,
         i18n: 'zh-CN',
         splitX: 0.5,
-        deepLApiKey: '',
-        deepLApiUrl: '',
-        openaiApiKey: '',
-        openaiApiUrl: '',
         ...(useCookie('option').value || {}),
       },
     };
