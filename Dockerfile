@@ -11,6 +11,9 @@ WORKDIR /app
 # 这样做可以利用Docker的层缓存机制，只有在依赖发生变化时才重新安装
 COPY package.json yarn.lock ./
 
+# 更换 yarn 的软件源为淘宝镜像源
+RUN yarn config set registry https://registry.npmmirror.com
+
 # 安装所有依赖，包括 devDependencies
 RUN yarn install
 

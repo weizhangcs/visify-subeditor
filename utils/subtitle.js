@@ -1,4 +1,5 @@
 import cloneDeep from 'lodash/cloneDeep';
+import { Sub } from './Sub'; // 确保导入 Sub 类
 
 export const ASS_KEYS = [
   'Name',
@@ -75,82 +76,34 @@ ${subtitle
     `.trim();
 }
 
-export function ass2vtt(ass) {
+export function ass2sub(ass) {
   const re_ass = new RegExp(
-    'Dialogue:\\s\\d,' +
-      '(\\d+:\\d\\d:\\d\\d.\\d\\d),' +
-      '(\\d+:\\d\\d:\\d\\d.\\d\\d),' +
-      '([^,]*),' +
-      '([^,]*),' +
-      '(?:[^,]*,){4}' +
-      '([\\s\\S]*)$',
-    'i',
+    'Dialogue:\\s*\\d+,' +
+    '([^,]+),' +                 // 1: Start
+    '([^,]+),' +                 // 2: End
+    '([^,]*),' +                // 3: Style
+    '([^,]*),' +                // 4: Actor
+    '[^,]*,[^,]*,[^,]*,[^,]*,' + // Margins L,R,V and Effect
+    '([\\s\\S]*)$',              // 5: Text
+    'i'
   );
 
-  function fixTime(time = '') {
-    return time
-      .split(/[:.]/)
-      .map((item, index, arr) => {
-        if (index === arr.length - 1) {
-          if (item.length === 1) {
-            return '.' + item + '00';
-          } else if (item.length === 2) {
-            return '.' + item + '0';
-          }
-        } else {
-          if (item.length === 1) {
-            return (index === 0 ? '0' : ':0') + item;
-          }
-        }
-
-        return index === 0
-          ? item
-          : index === arr.length - 1
-            ? '.' + item
-            : ':' + item;
-      })
-      .join('');
-  }
-
-  return (
-    'WEBVTT\n\n' +
-    ass
-      .split(/\r?\n/)
-      .map((line) => {
-        const m = line.match(re_ass);
-        if (!m) return null;
-        return {
-          start: fixTime(m[1].trim()),
-          end: fixTime(m[2].trim()),
-          text: m[5]
-            .replace(/{[\s\S]*?}/g, '')
-            .replace(/(\\N)/g, '\n')
-            .trim()
-            .split(/\r?\n/)
-            .map((item) => item.trim())
-            .join('\n'),
-        };
-      })
-      .filter((line) => line)
-      .map((line, index) => {
-        if (line) {
-          return (
-            index +
-            1 +
-            '\n' +
-            line.start +
-            ' --> ' +
-            line.end +
-            '\n' +
-            line.text
-          );
-        } else {
-          return '';
-        }
-      })
-      .filter((line) => line.trim())
-      .join('\n\n')
-  );
+  return ass
+    .split(/\r?\n/)
+    .map((line) => {
+      const m = line.match(re_ass);
+      if (!m) return null;
+      return new Sub({
+        start: toSubTime(m[1].trim()),
+        end: toSubTime(m[2].trim()),
+        speaker: m[4].trim(),
+        text: m[5]
+          .replace(/{[\s\S]*?}/g, '')
+          .replace(/\\N/g, '\n')
+          .trim(),
+      });
+    })
+    .filter((sub) => sub && sub.check);
 }
 
 export function fixSrt(srt) {
@@ -250,6 +203,10 @@ export function vtt2url(vtt) {
 export function file2sub(file) {
   return new Promise((resolve) => {
     async function handle(result) {
+      const getFileFormat = (fileName) => {
+        const parts = fileName.split('.');
+        return parts.length > 1 ? parts.pop().toLowerCase() : '';
+      };
       const ext = getFileFormat(file.name);
       if (ext === 'json') {
         try {
@@ -270,9 +227,7 @@ export function file2sub(file) {
             break;
           }
           case 'ass': {
-            const vtt = ass2vtt(text);
-            const url = vtt2url(vtt);
-            const sub = await url2sub(url);
+            const sub = ass2sub(text);
             resolve(sub);
             break;
           }
@@ -294,7 +249,7 @@ export function file2sub(file) {
     const reader = new FileReader();
 
     reader.onload = () => {
-      if (reader.result.includes('��') && !tryGB2312) {
+      if (reader.result.includes('') && !tryGB2312) {
         tryGB2312 = true;
         reader.readAsText(file, 'GB2312');
       } else {

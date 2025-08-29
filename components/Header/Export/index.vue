@@ -43,18 +43,18 @@ function getCookie(name) {
 async function exportToWorkbench() {
   isSaving.value = true;
   try {
-    // 1. 获取 assetId
+    // 1. 获取 jobId
     const params = new URLSearchParams(window.location.search);
-    const assetId = params.get('assetId');
-    if (!assetId) {
-      throw new Error('Asset ID not found in URL.');
+    const jobId = params.get('jobId');
+    if (!jobId) {
+      throw new Error('Job ID not found in URL.');
     }
 
     // 2. 生成 .ass 内容
     const assContent = sub2ass(taskStore.task);
 
-    // 3. 动态构建URL
-    const djangoApiUrl = `${config.public.vssWorkbenchUrl}/integrations/ls/asset/${assetId}/save-l1-output/`;
+    // 3. 根据新约定动态构建URL
+    const djangoApiUrl = `${config.public.vssWorkbenchUrl}/workflow/annotation/job/${jobId}/save-l1-output/`;
     const csrftoken = getCookie('csrftoken'); // 获取 CSRF Token
 
     const response = await fetch(djangoApiUrl, {

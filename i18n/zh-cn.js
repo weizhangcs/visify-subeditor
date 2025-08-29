@@ -107,6 +107,7 @@ export default {
   header: {
     keyboard: '快捷键',
     exportToWorkbench: '完成并导出',
+    returnToWorkbench: '返回Workbench',
     saveSuccess: '导出成功',
     undo: '撤销',
     redo: '重做',

@@ -68,11 +68,16 @@ onMounted(async () => {
       try {
         const response = await fetch(srtUrl);
         if (!response.ok) throw new Error('Network response was not ok.');
-        const srtText = await response.text();
-        const srtFile = new File([srtText], 'subtitle.srt', {
+        const subText = await response.text();
+
+        // 从 srtUrl 中动态提取文件名
+        const subFileName = srtUrl.split('/').pop().split('?')[0] || 'subtitle.ass';
+
+        const subFile = new File([subText], subFileName, {
           type: 'text/plain',
         });
-        const subtitles = await file2sub(srtFile);
+
+        const subtitles = await file2sub(subFile);
         taskStore.task.subtitle = subtitles;
       } catch (error) {
         console.error('Failed to load or parse SRT file:', error);

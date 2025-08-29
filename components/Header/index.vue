@@ -8,6 +8,9 @@
       <div class="flex items-center gap-4">
         <HeaderExport />
       </div>
+      <div class="flex items-center gap-4">
+        <HeaderReturnToSSW />
+      </div>
       <div class="h-4 w-[1px] bg-white/20" />
       <div class="flex items-center gap-4">
         <HeaderUndo />
@@ -21,3 +24,5 @@
     </div>
   </div>
 </template>
+<script setup lang="ts">
+</script>
