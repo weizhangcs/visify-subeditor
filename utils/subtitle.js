@@ -61,31 +61,31 @@ ${presets.map((preset) => `Style: ${ASS_KEYS.map((key) => preset[key]).join(', '
 [Events]
 Format: Layer, Start, End, Style, Actor, MarginL, MarginR, MarginV, Effect, Text
 ${subtitle
-    .map((item) => {
-      // 新增：直接从新数据模型获取数据
-      const speaker = (item.speaker || '').trim();
-      const dialogueText = (item.text || '').trim();
+  .map((item) => {
+    // 新增：直接从新数据模型获取数据
+    const speaker = (item.speaker || '').trim();
+    const dialogueText = (item.text || '').trim();
 
-      const start = toSubTime(item.start);
-      const end = toSubTime(item.end);
-      const assText = dialogueText.replace(/\r?\n/g, '\\N');
-      const preset = item.preset || 'Default';
-      return `Dialogue: 0,${start},${end},${preset},${speaker},0000,0000,0000,,${assText}`;
-    })
-    .join('\n')}
+    const start = toSubTime(item.start);
+    const end = toSubTime(item.end);
+    const assText = dialogueText.replace(/\r?\n/g, '\\N');
+    const preset = item.preset || 'Default';
+    return `Dialogue: 0,${start},${end},${preset},${speaker},0000,0000,0000,,${assText}`;
+  })
+  .join('\n')}
     `.trim();
 }
 
 export function ass2sub(ass) {
   const re_ass = new RegExp(
     'Dialogue:\\s*\\d+,' +
-    '([^,]+),' +                 // 1: Start
-    '([^,]+),' +                 // 2: End
-    '([^,]*),' +                // 3: Style
-    '([^,]*),' +                // 4: Actor
-    '[^,]*,[^,]*,[^,]*,[^,]*,' + // Margins L,R,V and Effect
-    '([\\s\\S]*)$',              // 5: Text
-    'i'
+      '([^,]+),' + // 1: Start
+      '([^,]+),' + // 2: End
+      '([^,]*),' + // 3: Style
+      '([^,]*),' + // 4: Actor
+      '[^,]*,[^,]*,[^,]*,[^,]*,' + // Margins L,R,V and Effect
+      '([\\s\\S]*)$', // 5: Text
+    'i',
   );
 
   return ass
@@ -245,19 +245,23 @@ export function file2sub(file) {
       }
     }
 
-    let tryGB2312 = false;
     const reader = new FileReader();
+    let hasTriedFallback = false;
 
     reader.onload = () => {
-      if (reader.result.includes('') && !tryGB2312) {
-        tryGB2312 = true;
-        reader.readAsText(file, 'GB2312');
+      // 检查解码结果中是否包含Unicode替换字符（乱码的标志）
+      if (reader.result.includes('\uFFFD') && !hasTriedFallback) {
+        hasTriedFallback = true;
+        // 如果UTF-8解码失败，则回退到GB18030（GBK的超集）重新读取
+        reader.readAsText(file, 'GB18030');
       } else {
+        // 如果解码成功，或已经尝试过回退，则处理结果
         handle(reader.result);
       }
     };
 
-    reader.readAsText(file);
+    // 优先尝试使用UTF-8读取，这是Web标准
+    reader.readAsText(file, 'UTF-8');
   });
 }
 
